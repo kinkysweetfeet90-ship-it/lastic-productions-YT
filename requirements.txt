@@ -2,3 +2,4 @@ kivy
 yt-dlp
 ffmpeg-python
 flask
+gunicorn 
