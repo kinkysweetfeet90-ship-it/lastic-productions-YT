@@ -9,7 +9,6 @@
     <style>
         :root {
             --bg-body: #09090b;
-            --bg-glass: rgba(39, 39, 42, 0.4);
             --bg-card: rgba(24, 24, 27, 0.6);
             --text-primary: #fafafa;
             --text-secondary: #a1a1aa;
@@ -19,126 +18,51 @@
             --gradient-main: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
             --danger: #ef4444;
             --success: #10b981;
-            --warning: #f59e0b;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-body); color: var(--text-primary); font-family: var(--font-sans); }
-
-        /* Matrix rain background canvas */
-        .matrix-rain {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 0; opacity: 0.15; pointer-events: none;
-        }
-
-        /* Header */
-        header {
-            position: fixed; top: 0; left: 0; width: 100%;
-            padding: 16px 32px; display: flex; justify-content: space-between;
-            align-items: center; z-index: 100; background: rgba(9, 9, 11, 0.8);
-            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color);
-        }
-        .logo {
-            display: flex; align-items: center; gap: 12px;
-            font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700;
-        }
-        .logo-icon {
-            width: 32px; height: 32px; background: var(--gradient-main);
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-        }
-        .logo-text {
-            background: var(--gradient-main); -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .matrix-rain { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 0.15; pointer-events: none; }
+        header { position: fixed; top: 0; left: 0; width: 100%; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(9, 9, 11, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); }
+        .logo { display: flex; align-items: center; gap: 12px; font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-main); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .logo-text { background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .header-links { display: flex; gap: 24px; }
         .header-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: color 0.2s; }
         .header-links a:hover { color: var(--accent-primary); }
-
-        /* Hero section */
-        .hero {
-            position: relative; min-height: 100vh; width: 100%;
-            display: flex; align-items: center; justify-content: center;
-            padding: 0 32px 80px; overflow: hidden;
-        }
-        .hero::before {
-            content: ''; position: absolute; inset: 0;
-            background-image:
-                radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.08), transparent 20%),
-                radial-gradient(circle at 80% 80%, rgba(129, 70, 255, 0.06), transparent 25%);
-            z-index: 1;
-        }
-
-        /* Central content */
-        .hero-content {
-            position: relative; z-index: 2;
-            text-align: center; max-width: 720px; margin: 0 auto;
-        }
-        .hero-content h1 {
-            font-family: 'Orbitron', sans-serif; font-size: 2.8rem; font-weight: 700;
-            margin-bottom: 24px; line-height: 1.1;
-        }
-        .hero-content .gradient-text {
-            background: var(--gradient-main); -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .hero-content p {
-            font-size: 1.1rem; color: var(--text-secondary);
-            line-height: 1.6; margin-bottom: 32px; max-width: 580px; margin-left: auto; margin-right: auto;
-        }
-
-        /* Launch button */
-        .launch-btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            gap: 12px; border: none; padding: 16px 48px;
-            border-radius: 50px; font-size: 1rem; font-weight: 600;
-            cursor: pointer; text-decoration: none; text-transform: uppercase;
-            letter-spacing: 2px; transition: all 0.3s ease;
-            background: var(--gradient-main); color: #000;
-            box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
-        }
-        .launch-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 40px rgba(56, 189, 248, 0.6);
-        }
+        .hero { position: relative; min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; padding: 0 32px 80px; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.08), transparent 20%), radial-gradient(circle at 80% 80%, rgba(129, 70, 255, 0.06), transparent 25%); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 800px; margin: 0 auto; }
+        .hero-content h1 { font-family: 'Orbitron', sans-serif; font-size: 2.8rem; font-weight: 700; margin-bottom: 24px; line-height: 1.1; }
+        .hero-content .gradient-text { background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-content p { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 32px; max-width: 580px; margin-left: auto; margin-right: auto; }
+        .launch-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; border: none; padding: 16px 48px; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; background: var(--gradient-main); color: #000; box-shadow: 0 0 30px rgba(56, 189, 248, 0.4); }
+        .launch-btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(56, 189, 248, 0.6); }
         .launch-btn:active { transform: scale(0.98); }
-
-        /* Feature grid */
-        .features {
-            position: relative; z-index: 2;
-            max-width: 1100px; margin: 60px auto 0;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px; padding: 0 20px;
-        }
-        .feature-card {
-            background: var(--bg-card); backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color); border-radius: 16px;
-            padding: 24px; text-align: center;
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(56, 189, 248, 0.4);
-        }
-        .feature-card i {
-            font-size: 28px; color: var(--accent-primary);
-            margin-bottom: 12px;
-        }
+        .download-form { margin: 32px auto 0; max-width: 600px; }
+        .download-form .url-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: var(--text-primary); font-size: 15px; outline: none; transition: border-color 0.2s; }
+        .download-form .url-input:focus { border-color: var(--accent-primary); }
+        .download-form .fetch-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--gradient-main); color: #000; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; margin-top: 12px; transition: all 0.2s; }
+        .download-form .fetch-btn:hover { opacity: 0.9; }
+        .features { position: relative; z-index: 2; max-width: 1100px; margin: 60px auto 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; padding: 0 20px; }
+        .feature-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; text-align: center; transition: all 0.3s ease; }
+        .feature-card:hover { transform: translateY(-4px); border-color: rgba(56, 189, 248, 0.4); }
+        .feature-card i { font-size: 28px; color: var(--accent-primary); margin-bottom: 12px; }
         .feature-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
         .feature-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
-
-        /* Footer */
-        footer {
-            position: relative; z-index: 2;
-            text-align: center; padding: 40px 20px;
-            color: var(--text-secondary); font-size: 13px;
-        }
-        .footer-links {
-            display: flex; justify-content: center; gap: 16px; margin-bottom: 12px;
-        }
+        .result-section { margin-top: 24px; padding: 20px; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color); text-align: left; }
+        .result-section h3 { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
+        .video-preview { display: flex; gap: 12px; align-items: flex-start; }
+        .video-preview img { width: 120px; height: 90px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+        .video-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .video-info .meta { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+        .format-select { width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 13px; margin-top: 12px; }
+        .download-btn { width: 100%; padding: 12px; border: none; border-radius: 12px; background: var(--gradient-main); color: #000; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; margin-top: 12px; }
+        .download-btn:hover { opacity: 0.9; }
+        footer { position: relative; z-index: 2; text-align: center; padding: 40px 20px; color: var(--text-secondary); font-size: 13px; }
+        .footer-links { display: flex; justify-content: center; gap: 16px; margin-bottom: 12px; }
         .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 12px; }
         .footer-links a:hover { color: var(--accent-primary); }
-
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 2rem; }
             .hero-content p { font-size: 1rem; }
@@ -148,16 +72,10 @@
     </style>
 </head>
 <body>
-
-    <!-- Matrix rain canvas -->
     <canvas class="matrix-rain" id="matrixCanvas"></canvas>
-
-    <!-- Header -->
     <header>
         <div class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-bolt"></i>
-            </div>
+            <div class="logo-icon"><i class="fas fa-bolt"></i></div>
             <span class="logo-text">STUDIO CYBER</span>
         </div>
         <nav class="header-links">
@@ -167,59 +85,32 @@
         </nav>
     </header>
 
-    <!-- Hero section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>
-                <span class="gradient-text">LASTIC PRODUCTIONS</span><br>
-                Premium Media Toolset
-            </h1>
-            <p>
-                Download videos from YouTube, Twitter/X, Instagram, TikTok, Facebook,
-                and more. Support for multiple quality formats, audio extraction (MP3/M4A/WAV),
-                subtitles, and bulk profile scraping.
-            </p>
+            <h1><span class="gradient-text">LASTIC PRODUCTIONS</span><br>Premium Media Toolset</h1>
+            <p>Download videos from YouTube, Twitter/X, Instagram, TikTok, Facebook, and more. Support for multiple quality formats, audio extraction (MP3/M4A/WAV), subtitles, and bulk profile scraping.</p>
             <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/releases/latest" class="launch-btn">
                 <i class="fas fa-rocket"></i> LAUNCH APP
             </a>
 
+            <div class="download-form" id="download">
+                <input type="url" id="videoUrl" class="url-input" placeholder="Paste YouTube/TikTok/Instagram URL here..." />
+                <button class="fetch-btn" id="fetchBtn">FETCH DETAILS</button>
+                <div id="resultSection" style="display: none;" class="result-section"></div>
+            </div>
+
             <div class="features" id="features">
-                <div class="feature-card">
-                    <i class="fab fa-youtube"></i>
-                    <h3>YouTube Downloader</h3>
-                    <p>Download videos in MP4 up to 4K quality.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fab fa-twitter"></i>
-                    <h3>Twitter/X</h3>
-                    <p>Capture tweets, videos, and images.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fab fa-instagram"></i>
-                    <h3>Instagram</h3>
-                    <p>Photos, Reels, Stories & IGTV.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fab fa-tiktok"></i>
-                    <h3>TikTok</h3>
-                    <p>MP4 downloads with original sound.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-music"></i>
-                    <h3>Audio Extraction</h3>
-                    <p>Convert to MP3/M4A/WAV.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-file-export"></i>
-                    <h3>Subtitles</h3>
-                    <p>Extract SRT/WebVTT captions.</p>
-                </div>
+                <div class="feature-card"><i class="fab fa-youtube"></i><h3>YouTube Downloader</h3><p>Download videos in MP4 up to 4K quality.</p></div>
+                <div class="feature-card"><i class="fab fa-twitter"></i><h3>Twitter/X</h3><p>Capture tweets, videos, and images.</p></div>
+                <div class="feature-card"><i class="fab fa-instagram"></i><h3>Instagram</h3><p>Photos, Reels, Stories & IGTV.</p></div>
+                <div class="feature-card"><i class="fab fa-tiktok"></i><h3>TikTok</h3><p>MP4 downloads with original sound.</p></div>
+                <div class="feature-card"><i class="fas fa-music"></i><h3>Audio Extraction</h3><p>Convert to MP3/M4A/WAV.</p></div>
+                <div class="feature-card"><i class="fas fa-file-export"></i><h3>Subtitles</h3><p>Extract SRT/WebVTT captions.</p></div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
+    <footer id="support">
         <div class="footer-links">
             <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT">GitHub</a>
             <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/releases">Releases</a>
@@ -228,34 +119,29 @@
         <p>STUDIO CYBER · LASTIC PRODUCTIONS · 2026</p>
     </footer>
 
-    <!-- Matrix rain animation -->
     <script>
+        // Matrix rain animation
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
         let columns = [];
         const fontSize = 14;
         let cols;
-
         function initCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             cols = Math.floor(canvas.width / fontSize);
             columns = Array(cols).fill(0);
         }
-
         function drawMatrix() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             ctx.fillStyle = '#38bdf8';
             ctx.font = `${fontSize}px monospace`;
-
             for (let i = 0; i < columns.length; i++) {
                 const text = String.fromCharCode(0x30A0 + Math.random() * 96);
                 const x = i * fontSize;
                 const y = columns[i] * fontSize;
                 ctx.fillText(text, x, y);
-
                 if (y > canvas.height && Math.random() > 0.975) {
                     columns[i] = 0;
                 }
@@ -263,10 +149,79 @@
             }
             requestAnimationFrame(drawMatrix);
         }
-
         window.addEventListener('resize', initCanvas);
         initCanvas();
         drawMatrix();
+
+        // Smart download logic
+        const API_URL = "https://lastic-productions.onrender.com";
+
+        document.getElementById('fetchBtn').addEventListener('click', async function() {
+            const url = document.getElementById('videoUrl').value.trim();
+            if (!url) return alert('Please paste a URL first.');
+
+            const btn = this;
+            btn.innerHTML = '<i class="fas fa-spinner"></i> FETCHING...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`${API_URL}/info`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url })
+                });
+
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+                const data = await res.json();
+                showVideoDetails(data, url);
+            } catch(e) {
+                alert('Fetch failed: ' + e.message + '\n\nUse the desktop app for reliable downloads.');
+            } finally {
+                btn.innerHTML = '<i class="fas fa-download"></i> FETCH DETAILS';
+                btn.disabled = false;
+            }
+        });
+
+        function showVideoDetails(data, url) {
+            const section = document.getElementById('resultSection');
+            section.style.display = 'block';
+
+            let html = `<div class="video-preview">
+                <img src="${data.thumbnail || 'https://via.placeholder.com/120x90?text=No+Thumbnail'}" alt="Thumbnail" />
+                <div class="video-info">
+                    <h4>${data.title || 'Unknown Title'}</h4>
+                    <div class="meta">
+                        <div>• Duration: ${data.duration || 'N/A'}</div>
+                        <div>• Platform: ${data.platform || 'Detected'}</div>
+                        ${data.uploader ? `<div>• Uploader: ${data.uploader}</div>` : ''}
+                    </div>
+                </div>
+            </div>`;
+
+            if (data.formats && data.formats.length > 0) {
+                html += '<select id="formatSelect" class="format-select">';
+                data.formats.forEach(fmt => {
+                    const label = `${fmt.quality || fmt.ext} • ${fmt.ext} • ${fmt.type || 'video'}`;
+                    html += `<option value="${fmt.url || fmt.quality}">${label}</option>`;
+                });
+                html += '</select>';
+            }
+
+            html += `<button class="download-btn" onclick="downloadFile('${encodeURIComponent(url)}')">
+                <i class="fas fa-download"></i> DOWNLOAD NOW
+            </button>`;
+
+            // Update section heading
+            section.innerHTML = '<h3>Video Details</h3>' + html;
+        }
+
+        function downloadFile(encodedUrl) {
+            const fmt = document.getElementById('formatSelect');
+            const selected = fmt ? fmt.value : '';
+            const downloadUrl = `${API_URL}/download?url=${encodedUrl}${fmt ? '&format=' + encodeURIComponent(selected) : ''}`;
+            window.open(downloadUrl, '_blank');
+        }
     </script>
 </body>
 </html>
