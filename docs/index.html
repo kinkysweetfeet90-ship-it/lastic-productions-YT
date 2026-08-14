@@ -362,13 +362,58 @@
             if (modal) modal.remove();
         }
 
-        function processDownload() {
+        async function processDownload() {
             const url = document.getElementById('videoUrl').value.trim();
             if (!url) {
                 alert('Please paste a URL first.');
                 return;
             }
-            alert('Download requested for: ' + url + '\\n\\nNote: Full app required for actual downloads.\\nGet it from GitHub Releases.');
+
+            const submitBtn = document.querySelector('.download-submit');
+            submitBtn.innerHTML = '<i class="fas fa-spinner"></i> FETCHING...';
+            submitBtn.disabled = true;
+
+            try {
+                const res = await fetch('https://lastic-productions.onrender.com/info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url })
+                });
+                const data = await res.json();
+
+                if (data.formats && data.formats.length > 0) {
+                    showFormatOptions(data, url);
+                } else {
+                    alert('No formats available. Please try another URL.');
+                }
+            } catch(e) {
+                alert('Fetch failed: ' + e.message + '\n\nUse the desktop app for reliable downloads.');
+            } finally {
+                submitBtn.innerHTML = '<i class="fas fa-download"></i> DOWNLOAD';
+                submitBtn.disabled = false;
+            }
+        }
+
+        function showFormatOptions(data, url) {
+            const formSection = document.querySelector('.download-form-section');
+            let options = `
+                <select id="formatSelect" class="download-input" style="margin-top: 12px; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-primary); width: 100%; font-size: 14px;">
+            `;
+            data.formats.forEach(fmt => {
+                options += `<option value="${fmt.quality}">${fmt.quality} • ${fmt.ext} • ${fmt.type}</option>`;
+            });
+            options += '</select>';
+
+            formSection.innerHTML += options;
+
+            const downloadBtn = document.createElement('button');
+            downloadBtn.className = 'download-submit';
+            downloadBtn.innerHTML = '<i class="fas fa-download"></i> DOWNLOAD SELECTED';
+            downloadBtn.onclick = () => {
+                const fmt = document.getElementById('formatSelect').value;
+                window.open(`https://lastic-productions.onrender.com/download?url=${encodeURIComponent(url)}&format=${fmt}`, '_blank');
+            };
+            formSection.appendChild(downloadBtn);
         }
 
         // Modal CSS injection
