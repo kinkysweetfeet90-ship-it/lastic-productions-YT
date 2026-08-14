@@ -56,8 +56,8 @@ jobs:
         mv android-sdk/cmdline-tools/cmdline-tools android-sdk/cmdline-tools/latest
         export ANDROID_SDK_ROOT=$HOME/android-sdk
         export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
-        yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platforms;android-33"
-        yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT "build-tools;33.0.0"
+        yes | sdkmanager --licenses --sdk_root=$ANDROID_SDK_ROOT 2>&1 || true
+        yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platforms;android-33" "build-tools;33.0.0" 2>&1 || true
         wget -q https://dl.google.com/android/repository/android-ndk-r25c-linux.zip
         unzip -q android-ndk-r25c-linux.zip
         export ANDROID_NDK_HOME=$HOME/android-ndk-r25c
