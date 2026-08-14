@@ -183,6 +183,8 @@
             header { padding: 12px 20px; }
         }
     </style>
+    <!-- FontAwesome for social icons -->
+    <script src="https://kit.fontawesome.com/8b3a1a8a4c.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -219,16 +221,17 @@
                 Support for multiple quality formats, audio extraction (MP3/M4A/WAV), subtitles,
                 and bulk profile scraping.
             </p>
-            <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/releases/latest" class="launch-btn">
+            <a href="javascript:void(0)" class="launch-btn" onclick="openDownloadModal()">
                 <i class="fas fa-rocket"></i>
                 LAUNCH APP
             </a>
 
             <div class="feature-grid" id="features">
-                <div class="feature-card">
+                <div class="feature-card" onclick="openDownloadModal()">
                     <i>🎥</i>
                     <h3>YouTube & Social</h3>
                     <p>Download from all major platforms</p>
+                    <div style="margin-top: 12px; font-size: 12px; color: var(--accent-primary);">Click to download →</div>
                 </div>
                 <div class="feature-card">
                     <i>🎵</i>
@@ -299,6 +302,101 @@
 
         checkBuildStatus();
         setInterval(checkBuildStatus, 60000); // Check every minute
+
+        // Download modal
+        function openDownloadModal() {
+            const platforms = [
+                { name: "YouTube", icon: "youtube", color: "#FF0000" },
+                { name: "Twitter/X", icon: "twitter", color: "#1DA1F2" },
+                { name: "Instagram", icon: "instagram", color: "#E4405F" },
+                { name: "TikTok", icon: "tiktok", color: "#FEAF1A" },
+                { name: "Facebook", icon: "facebook", color: "#1877F2" },
+                { name: "Reddit", icon: "reddit", color: "#FF4500" },
+                { name: "Twitch", icon: "twitch", color: "#9146FF" },
+                { name: "SoundCloud", icon: "soundcloud", color: "#FF5500" }
+            ];
+
+            let cards = '';
+            platforms.forEach(p => {
+                cards += `<div class="platform-card" style="border-color: ${p.color};">
+                    <div class="platform-icon" style="color: ${p.color};">
+                        <i class="fab fa-${p.icon}"></i>
+                    </div>
+                    <h3>${p.name}</h3>
+                    <p>Video + Audio + Subs</p>
+                </div>`;
+            });
+
+            const modal = document.createElement('div');
+            modal.className = 'download-modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Download From</h2>
+                        <span class="close-modal" onclick="closeDownloadModal()">&times;</span>
+                    </div>
+                    <div class="platform-grid">${cards}</div>
+                    <div class="download-form-section">
+                        <input type="url" id="videoUrl" class="download-input" placeholder="Paste video/podcast URL here..." />
+                        <button class="download-submit" onclick="processDownload()">
+                            <i class="fas fa-download"></i> DOWNLOAD
+                        </button>
+                    </div>
+                    <div class="app-downloads">
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+                            Or get the full desktop app:
+                        </p>
+                        <div class="app-downloads-grid">
+                            <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/releases/latest" class="app-download-btn">
+                                <i class="fab fa-github"></i> GitHub Releases
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function closeDownloadModal() {
+            const modal = document.querySelector('.download-modal');
+            if (modal) modal.remove();
+        }
+
+        function processDownload() {
+            const url = document.getElementById('videoUrl').value.trim();
+            if (!url) {
+                alert('Please paste a URL first.');
+                return;
+            }
+            alert('Download requested for: ' + url + '\\n\\nNote: Full app required for actual downloads.\\nGet it from GitHub Releases.');
+        }
+
+        // Modal CSS injection
+        const modalStyles = document.createElement('style');
+        modalStyles.textContent = `
+            .download-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+            .modal-content { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border-color); border-radius: 24px; width: 100%; max-width: 600px; padding: 32px; max-height: 85vh; overflow-y: auto; }
+            .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+            .modal-header h2 { font-family: var(--font-display); font-size: 1.8rem; }
+            .close-modal { cursor: pointer; font-size: 28px; color: var(--text-secondary); transition: color 0.2s; }
+            .close-modal:hover { color: var(--danger); }
+            .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
+            .platform-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; text-align: center; transition: all 0.2s; }
+            .platform-card:hover { transform: translateY(-2px); border-color: var(--accent-primary); }
+            .platform-icon { font-size: 24px; margin-bottom: 8px; }
+            .platform-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+            .platform-card p { font-size: 11px; color: var(--text-muted); }
+            .download-form-section { margin: 20px 0; }
+            .download-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px; color: var(--text-primary); font-size: 14px; }
+            .download-submit { width: 100%; padding: 12px; background: var(--gradient-main); border: none; border-radius: 12px; color: #000; font-weight: 700; cursor: pointer; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+            .download-submit:hover { opacity: 0.9; }
+            .app-downloads { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color); }
+            .app-downloads-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+            .app-download-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-primary); padding: 12px; border-radius: 12px; text-align: center; text-decoration: none; font-size: 14px; transition: all 0.2s; }
+            .app-download-btn:hover { background: rgba(255,255,255,0.1); color: var(--accent-primary); }
+            .feature-card { cursor: pointer !important; }
+        `;
+        document.head.appendChild(modalStyles);
 
         console.log("%cSTUDIO CYBER · LASTIC PRODUCTIONS", "color:#38bdf8; font-family:monospace");
     </script>
