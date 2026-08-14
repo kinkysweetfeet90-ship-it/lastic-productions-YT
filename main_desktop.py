@@ -14,7 +14,7 @@ from kivy.clock import Clock
 from kivy.utils import platform
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.animation import Animation
 
 import threading
@@ -133,7 +133,7 @@ KV = '''
                 id: url_input
                 hint_text: 'Paste YouTube or Social link here...'
                 multiline: False
-                size_hint_x: 0.8
+                size_hint_x: 0.65
                 background_color: 0.13, 0.13, 0.13, 1
                 foreground_color: 1, 1, 1, 1
                 cursor_color: 0, 0.44, 0.95, 1
@@ -142,6 +142,20 @@ KV = '''
                 on_text_validate: root.fetch_info_threaded()
                 use_bubble: True
                 use_handles: True
+                write_tab: False
+                focus: True
+                input_type: 'text'
+                keyboard_suggestions: True
+
+            Button:
+                text: 'PASTE'
+                size_hint_x: None
+                width: 70
+                background_normal: ''
+                background_color: 0.3, 0.3, 0.3, 1
+                bold: True
+                font_size: '12sp'
+                on_release: root.paste_from_clipboard()
 
             Button:
                 text: 'ANALYZE'
@@ -223,13 +237,14 @@ KV = '''
                 background_normal: ''
                 background_color: 0.13, 0.13, 0.13, 1
                 font_size: '13sp'
+                on_text: root.current_quality = self.text
 
         # Audio Settings (shown when Audio Only selected)
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
-            height: 40 if 'Audio' in root.ids.quality_spinner.text else 0
-            opacity: 1 if 'Audio' in root.ids.quality_spinner.text else 0
+            height: 40 if 'Audio' in root.current_quality else 0
+            opacity: 1 if 'Audio' in root.current_quality else 0
             spacing: 10
             
             Label:
@@ -252,8 +267,8 @@ KV = '''
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
-            height: 40 if 'Audio' in root.ids.quality_spinner.text else 0
-            opacity: 1 if 'Audio' in root.ids.quality_spinner.text else 0
+            height: 40 if 'Audio' in root.current_quality else 0
+            opacity: 1 if 'Audio' in root.current_quality else 0
             spacing: 10
             
             Label:
@@ -299,6 +314,20 @@ KV = '''
                 font_size: '16sp'
                 disabled: True
                 on_release: root.start_mp3_download()
+
+        # Cancel Button (shown during download)
+        Button:
+            id: cancel_btn
+            text: 'CANCEL DOWNLOAD'
+            background_normal: ''
+            background_color: 0.8, 0.2, 0.2, 1
+            bold: True
+            font_size: '14sp'
+            size_hint_y: None
+            height: 0
+            opacity: 0
+            disabled: True
+            on_release: root.cancel_download()
 
     # --- Progress Section ---
     BoxLayout:
@@ -427,6 +456,9 @@ KV = '''
 
 class MainLayout(BoxLayout):
     video_title = ObjectProperty('')
+    current_quality = StringProperty('')
+    download_thread = None
+    cancel_requested = False
     
     def log(self, message):
         print(f"APP_LOG: {message}")
@@ -444,6 +476,20 @@ class MainLayout(BoxLayout):
         self.ids.progress_bar.value = 0
         self.ids.status_label.text = 'READY'
         self.ids.speed_eta_label.text = ''
+
+    def paste_from_clipboard(self):
+        try:
+            from kivy.core.clipboard import Clipboard
+            clipboard_text = Clipboard.paste()
+            if clipboard_text:
+                self.ids.url_input.text = clipboard_text.strip()
+                self.log("URL pasted from clipboard")
+                # Auto-analyze after pasting
+                Clock.schedule_once(lambda dt: self.fetch_info_threaded(), 0.5)
+            else:
+                self.log("Clipboard is empty")
+        except Exception as e:
+            self.log(f"Failed to paste: {str(e)}")
 
     def fetch_info_threaded(self):
         url = self.ids.url_input.text.strip()
@@ -531,6 +577,9 @@ class MainLayout(BoxLayout):
             self.log("Error: Please enter a URL")
             return
 
+        # Reset cancel flag
+        self.cancel_requested = False
+
         # Choose download location (desktop only)
         download_dir = None
         if platform != "android" and HAS_TKINTER:
@@ -553,21 +602,58 @@ class MainLayout(BoxLayout):
         
         self.ids.status_label.text = "Initializing..."
         self.log(f"Starting download: {quality_text}" + (f" ({audio_format.upper()} {audio_quality}kbps)" if audio_format else ""))
+        
+        # Show cancel button, hide download buttons
+        self.show_cancel_button()
+        
+        self.download_thread = threading.Thread(target=self.download_thread_func, args=(url, quality_text, download_dir, audio_format, audio_quality), daemon=True)
+        self.download_thread.start()
+
+    def cancel_download(self):
+        self.cancel_requested = True
+        self.log("Cancelling download...")
+        self.ids.status_label.text = "Cancelling..."
+        self.hide_cancel_button()
+        
+    def show_cancel_button(self):
+        self.ids.cancel_btn.height = 50
+        self.ids.cancel_btn.opacity = 1
+        self.ids.cancel_btn.disabled = False
         self.ids.download_btn.disabled = True
         self.ids.mp3_btn.disabled = True
         
-        threading.Thread(target=self.download_thread, args=(url, quality_text, download_dir, audio_format, audio_quality), daemon=True).start()
+    def hide_cancel_button(self):
+        self.ids.cancel_btn.height = 0
+        self.ids.cancel_btn.opacity = 0
+        self.ids.cancel_btn.disabled = True
 
-    def download_thread(self, url, quality_text, download_dir=None, audio_format=None, audio_quality=None):
+    def download_thread_func(self, url, quality_text, download_dir=None, audio_format=None, audio_quality=None):
         ydl_opts = {
             'progress_hooks': [self.progress_hook],
             'outtmpl': '%(title)s.%(ext)s',
             'quiet': True,
             'no_warnings': True,
             'logger': YtdlpLogger(),
-            # Add user agent to help with Twitter/X
             'http_headers': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Accept-Encoding': 'gzip, deflate',
+                'DNT': '1',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+            },
+            'extractor_args': {
+                'youtube': {
+                    'player_client': ['android', 'web'],
+                    'player_skip': ['configs', 'webpage'],
+                }
+            },
+            'extractor_retries': 3,
+            'fragment_retries': 3,
+            'retry_sleep_functions': {
+                'http': lambda x: min(x * 2, 30),
+                'fragment': lambda x: min(x * 2, 30)
             }
         }
 
@@ -614,10 +700,14 @@ class MainLayout(BoxLayout):
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(url, download=True)
                 title = info.get('title', 'Video')
-                Clock.schedule_once(lambda dt: self.success_ui(title))
+                if not self.cancel_requested:
+                    Clock.schedule_once(lambda dt: self.success_ui(title))
         except Exception as e:
-            error_msg = str(e)
-            Clock.schedule_once(lambda dt: self.error_ui(error_msg))
+            if not self.cancel_requested:
+                error_msg = str(e)
+                Clock.schedule_once(lambda dt: self.error_ui(error_msg))
+            else:
+                Clock.schedule_once(lambda dt: self.log("Download cancelled successfully"))
 
     def progress_hook(self, d):
         if d['status'] == 'downloading':
@@ -658,6 +748,7 @@ class MainLayout(BoxLayout):
         self.ids.speed_eta_label.text = ""
         self.ids.download_btn.disabled = False
         self.ids.mp3_btn.disabled = False
+        self.hide_cancel_button()  # Hide cancel button
         self.log(f"Successfully downloaded: {title}")
         
         # Animation: Bright Green Pulse
@@ -670,15 +761,26 @@ class MainLayout(BoxLayout):
         self.log(f"Error: {msg}")
         self.ids.download_btn.disabled = False
         self.ids.mp3_btn.disabled = False
+        self.hide_cancel_button()  # Hide cancel button
 
 class VideoDownloaderApp(App):
     title = "Lastic Productions"
     def build(self):
         Builder.load_string(KV)
+        # Set window size for desktop
+        from kivy.config import Config
+        Config.set('graphics', 'width', '800')
+        Config.set('graphics', 'height', '700')
+        Config.set('graphics', 'resizable', '1')
         return MainLayout()
 
     def on_start(self):
         check_permissions()
+        # Focus on the URL input field when app starts
+        def focus_input(dt):
+            if hasattr(self, 'root') and self.root and hasattr(self.root.ids, 'url_input'):
+                self.root.ids.url_input.focus = True
+        Clock.schedule_once(focus_input, 1)
 
 if __name__ == '__main__':
     VideoDownloaderApp().run()

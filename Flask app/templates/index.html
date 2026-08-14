@@ -12,57 +12,119 @@
         <!-- Header -->
         <header class="app-header">
             <h1>LASTIC PRODUCTIONS</h1>
-            <p>High-Speed Video & Audio Downloader</p>
+            <p>Premium Media Toolset</p>
+            <div class="tab-switcher">
+                <button class="tab-btn active" data-tab="singleTab">SINGLE LINK</button>
+                <button class="tab-btn" data-tab="searchTab">SEARCH</button>
+                <button class="tab-btn" data-tab="profileTab">PROFILE SCRAPER</button>
+            </div>
         </header>
 
         <!-- Main Content -->
         <main class="content">
-            <!-- URL Input -->
-            <section class="input-section">
-                <div class="input-group">
-                    <input type="text" id="videoUrl" placeholder="Paste YouTube or Social link here..." autocomplete="off">
-                    <button id="analyzeBtn">ANALYZE</button>
-                </div>
-                <div id="errorMessage" class="error-text hidden"></div>
-            </section>
-
-            <!-- Preview Card (Hidden initially) -->
-            <section id="previewSection" class="preview-card hidden">
-                <div class="preview-flex">
-                    <img id="thumbnail" src="" alt="Thumbnail">
-                    <div class="video-info">
-                        <h3 id="videoTitle"></h3>
+            <!-- Single Link Tab -->
+            <div id="singleTab" class="tab-content active">
+                <section class="input-section">
+                    <div class="input-group">
+                        <input type="text" id="videoUrl" placeholder="Paste YouTube/Social link here..." autocomplete="off">
+                        <button id="analyzeBtn" class="action-btn">ANALYZE</button>
                     </div>
-                </div>
+                </section>
 
-                <div class="settings">
-                    <div class="control-group">
-                        <label for="qualitySelect">Video Quality:</label>
-                        <select id="qualitySelect"></select>
+                <section id="previewSection" class="preview-card hidden">
+                    <div class="preview-flex">
+                        <img id="thumbnail" src="" alt="Thumbnail">
+                        <div class="video-info">
+                            <h3 id="videoTitle"></h3>
+                        </div>
                     </div>
-
-                    <div id="audioSettings" class="control-group hidden">
-                        <label for="formatSelect">Format:</label>
-                        <select id="formatSelect">
-                            <option value="mp3">MP3</option>
-                            <option value="m4a">M4A</option>
-                            <option value="wav">WAV</option>
-                        </select>
-                        <label for="bitrateSelect" class="mt-2">Bitrate:</label>
-                        <select id="bitrateSelect">
-                            <option value="320">320kbps</option>
-                            <option value="256">256kbps</option>
-                            <option value="192">192kbps</option>
-                            <option value="128">128kbps</option>
-                        </select>
+                    <div class="settings">
+                        <div class="control-group">
+                            <label>Video Quality:</label>
+                            <select id="qualitySelect"></select>
+                        </div>
+                        <div id="playlistInfo" class="control-group hidden">
+                            <label style="color: var(--accent-blue);">📁 Playlist detected - <span id="videoCount">0</span> videos</label>
+                        </div>
+                        <div class="control-group">
+                            <label>
+                                <input type="checkbox" id="subtitleToggle"> Download Subtitles
+                            </label>
+                            <div id="subtitleSettings" class="hidden" style="margin-top: 8px;">
+                                <label>Language:</label>
+                                <select id="subLangSelect">
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                    <option value="de">German</option>
+                                    <option value="ja">Japanese</option>
+                                    <option value="ko">Korean</option>
+                                    <option value="zh">Chinese</option>
+                                    <option value="ru">Russian</option>
+                                    <option value="pt">Portuguese</option>
+                                    <option value="ar">Arabic</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="audioSettings" class="control-group hidden">
+                            <label>Format:</label>
+                            <select id="formatSelect">
+                                <option value="mp3">MP3</option>
+                                <option value="m4a">M4A</option>
+                                <option value="wav">WAV</option>
+                            </select>
+                            <label class="mt-2">Bitrate:</label>
+                            <select id="bitrateSelect">
+                                <option value="320">320kbps</option>
+                                <option value="256">256kbps</option>
+                                <option value="192">192kbps</option>
+                                <option value="128">128kbps</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                    <div class="action-buttons">
+                        <button id="downloadBtn" class="primary-btn">DOWNLOAD VIDEO</button>
+                        <button id="quickMp3Btn" class="secondary-btn">QUICK MP3</button>
+                    </div>
+                </section>
+            </div>
 
-                <div class="action-buttons">
-                    <button id="downloadBtn" class="primary-btn">DOWNLOAD VIDEO</button>
-                    <button id="quickMp3Btn" class="secondary-btn">QUICK MP3</button>
-                </div>
-            </section>
+            <!-- Search Tab -->
+            <div id="searchTab" class="tab-content">
+                <section class="input-section">
+                    <div class="input-group">
+                        <input type="text" id="searchQuery" placeholder="Search YouTube videos..." autocomplete="off">
+                        <button id="searchBtn" class="action-btn">SEARCH</button>
+                    </div>
+                </section>
+
+                <section id="searchResults" class="search-results-container hidden">
+                    <div class="search-info-header">
+                        <span id="searchResultsCount">0 results</span>
+                    </div>
+                    <div id="searchResultsGrid" class="search-results-grid"></div>
+                </section>
+            </div>
+
+            <!-- Profile Scraper Tab -->
+            <div id="profileTab" class="tab-content">
+                <section class="input-section">
+                    <div class="profile-input-group">
+                        <input type="text" id="profileUrl" placeholder="Paste Profile URL (Twitter, Instagram, etc)..." autocomplete="off">
+                        <button id="scrapeProfileBtn" class="action-btn">SCRAPE PROFILE</button>
+                    </div>
+                </section>
+
+                <section id="profilePreview" class="profile-grid-container hidden">
+                    <div class="profile-info-header">
+                        <span id="itemsFoundCount">0 items found</span>
+                        <button id="downloadAllProfileBtn" class="download-all-btn">DOWNLOAD ALL</button>
+                    </div>
+                    <div id="profileMediaGrid" class="media-grid"></div>
+                </section>
+            </div>
+
+            <div id="errorMessage" class="error-text hidden"></div>
 
             <!-- Progress Section -->
             <section id="progressSection" class="progress-container hidden">
@@ -92,6 +154,17 @@
     </div>
 
     <script>
+        // Tab Switching Logic
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+                addLog(`Switched to: ${btn.textContent}`);
+            };
+        });
+
         const elements = {
             videoUrl: document.getElementById('videoUrl'),
             analyzeBtn: document.getElementById('analyzeBtn'),
@@ -99,9 +172,28 @@
             thumbnail: document.getElementById('thumbnail'),
             videoTitle: document.getElementById('videoTitle'),
             qualitySelect: document.getElementById('qualitySelect'),
+            playlistInfo: document.getElementById('playlistInfo'),
+            videoCount: document.getElementById('videoCount'),
+            subtitleToggle: document.getElementById('subtitleToggle'),
+            subtitleSettings: document.getElementById('subtitleSettings'),
+            subLangSelect: document.getElementById('subLangSelect'),
             audioSettings: document.getElementById('audioSettings'),
             downloadBtn: document.getElementById('downloadBtn'),
             quickMp3Btn: document.getElementById('quickMp3Btn'),
+            
+            profileUrl: document.getElementById('profileUrl'),
+            scrapeProfileBtn: document.getElementById('scrapeProfileBtn'),
+            profilePreview: document.getElementById('profilePreview'),
+            itemsFoundCount: document.getElementById('itemsFoundCount'),
+            profileMediaGrid: document.getElementById('profileMediaGrid'),
+            downloadAllProfileBtn: document.getElementById('downloadAllProfileBtn'),
+
+            searchQuery: document.getElementById('searchQuery'),
+            searchBtn: document.getElementById('searchBtn'),
+            searchResults: document.getElementById('searchResults'),
+            searchResultsCount: document.getElementById('searchResultsCount'),
+            searchResultsGrid: document.getElementById('searchResultsGrid'),
+
             progressSection: document.getElementById('progressSection'),
             statusLabel: document.getElementById('statusLabel'),
             speedEta: document.getElementById('speedEta'),
@@ -121,6 +213,7 @@
             elements.statusLog.scrollTop = elements.statusLog.scrollHeight;
         }
 
+        // --- SINGLE LINK LOGIC ---
         elements.analyzeBtn.onclick = async () => {
             const url = elements.videoUrl.value.trim();
             if(!url) return;
@@ -143,6 +236,17 @@
                 elements.thumbnail.src = data.thumbnail;
                 elements.videoTitle.textContent = data.title;
                 elements.qualitySelect.innerHTML = data.qualities.map(q => `<option value="${q}">${q}</option>`).join('');
+                
+                // Show playlist info if detected
+                if(data.is_playlist) {
+                    elements.playlistInfo.classList.remove('hidden');
+                    elements.videoCount.textContent = data.video_count;
+                    elements.downloadBtn.textContent = 'DOWNLOAD PLAYLIST';
+                } else {
+                    elements.playlistInfo.classList.add('hidden');
+                    elements.downloadBtn.textContent = 'DOWNLOAD VIDEO';
+                }
+                
                 elements.previewSection.classList.remove('hidden');
                 addLog(`Analyzed: ${data.title}`);
             } catch (err) {
@@ -162,6 +266,144 @@
                 elements.audioSettings.classList.add('hidden');
             }
         };
+
+        elements.subtitleToggle.onchange = () => {
+            if(elements.subtitleToggle.checked) {
+                elements.subtitleSettings.classList.remove('hidden');
+            } else {
+                elements.subtitleSettings.classList.add('hidden');
+            }
+        };
+
+        // --- PROFILE SCRAPER LOGIC ---
+        elements.scrapeProfileBtn.onclick = async () => {
+            const url = elements.profileUrl.value.trim();
+            if(!url) return;
+
+            elements.scrapeProfileBtn.disabled = true;
+            elements.scrapeProfileBtn.textContent = 'SCRAPING...';
+            elements.profilePreview.classList.add('hidden');
+            elements.errorMessage.classList.add('hidden');
+            addLog(`Scraping profile: ${url.substring(0, 30)}...`);
+
+            try {
+                const res = await fetch('/profile/analyze', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({url})
+                });
+                const data = await res.json();
+                
+                if(data.error) throw new Error(data.error);
+
+                elements.itemsFoundCount.textContent = `${data.items.length} items found`;
+                elements.profileMediaGrid.innerHTML = data.items.map(item => `
+                    <div class="media-item">
+                        <img src="${item.thumbnail}" loading="lazy">
+                        <div class="media-overlay">
+                            <span>${item.type.toUpperCase()}</span>
+                        </div>
+                    </div>
+                `).join('');
+                
+                elements.profilePreview.classList.remove('hidden');
+                addLog(`Found ${data.items.length} media items on profile.`);
+            } catch (err) {
+                elements.errorMessage.textContent = err.message;
+                elements.errorMessage.classList.remove('hidden');
+                addLog(`Scrape failed: ${err.message}`, 'error');
+            } finally {
+                elements.scrapeProfileBtn.disabled = false;
+                elements.scrapeProfileBtn.textContent = 'SCRAPE PROFILE';
+            }
+        };
+
+        elements.downloadAllProfileBtn.onclick = async () => {
+             const url = elements.profileUrl.value.trim();
+             addLog(`Starting bulk download for profile...`);
+             elements.downloadAllProfileBtn.disabled = true;
+             
+             try {
+                const res = await fetch('/profile/download', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({url})
+                });
+                pollStatus();
+             } catch (err) {
+                 addLog(`Bulk download failed: ${err.message}`, 'error');
+                 elements.downloadAllProfileBtn.disabled = false;
+             }
+        };
+
+        // --- SEARCH LOGIC ---
+        elements.searchBtn.onclick = async () => {
+            const query = elements.searchQuery.value.trim();
+            if(!query) return;
+
+            elements.searchBtn.disabled = true;
+            elements.searchBtn.textContent = '...';
+            elements.errorMessage.classList.add('hidden');
+            elements.searchResults.classList.add('hidden');
+            addLog(`Searching: ${query.substring(0, 30)}...`);
+
+            try {
+                const res = await fetch('/search', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({query, max_results: 12})
+                });
+                const data = await res.json();
+                
+                if(data.error) throw new Error(data.error);
+
+                elements.searchResultsCount.textContent = `${data.results.length} results for "${data.query}"`;
+                elements.searchResultsGrid.innerHTML = data.results.map(item => `
+                    <div class="search-result-card" data-url="${item.url}">
+                        <img src="${item.thumbnail}" loading="lazy" class="search-result-thumb">
+                        <div class="search-result-info">
+                            <h4 class="search-result-title">${item.title}</h4>
+                            <p class="search-result-channel">${item.channel}</p>
+                            <p class="search-result-meta">${formatDuration(item.duration)} • ${formatViews(item.views)}</p>
+                        </div>
+                        <button class="search-download-btn" onclick="downloadFromSearch('${item.url}')">⬇</button>
+                    </div>
+                `).join('');
+                
+                elements.searchResults.classList.remove('hidden');
+                addLog(`Found ${data.results.length} results.`);
+            } catch (err) {
+                elements.errorMessage.textContent = err.message;
+                elements.errorMessage.classList.remove('hidden');
+                addLog(`Search failed: ${err.message}`, 'error');
+            } finally {
+                elements.searchBtn.disabled = false;
+                elements.searchBtn.textContent = 'SEARCH';
+            }
+        };
+
+        function formatDuration(seconds) {
+            if(!seconds) return 'LIVE';
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function formatViews(views) {
+            if(!views) return '0 views';
+            if(views >= 1000000) return `${(views/1000000).toFixed(1)}M views`;
+            if(views >= 1000) return `${(views/1000).toFixed(1)}K views`;
+            return `${views} views`;
+        }
+
+        async function downloadFromSearch(url) {
+            elements.videoUrl.value = url;
+            document.querySelector('[data-tab="singleTab"]').click();
+            
+            setTimeout(async () => {
+                elements.analyzeBtn.click();
+            }, 300);
+        }
 
         async function startDownload(config) {
             elements.downloadBtn.disabled = true;
@@ -191,7 +433,9 @@
             startDownload({
                 quality: elements.qualitySelect.value,
                 audio_format: document.getElementById('formatSelect').value,
-                bitrate: document.getElementById('bitrateSelect').value
+                bitrate: document.getElementById('bitrateSelect').value,
+                download_subs: elements.subtitleToggle.checked,
+                sub_langs: elements.subLangSelect.value
             });
         };
 
@@ -199,7 +443,8 @@
             startDownload({
                 quality: 'Audio Only',
                 audio_format: 'mp3',
-                bitrate: '320'
+                bitrate: '320',
+                download_subs: false
             });
         };
 
@@ -218,12 +463,12 @@
                     clearInterval(pollInterval);
                     elements.downloadBtn.disabled = false;
                     elements.quickMp3Btn.disabled = false;
+                    elements.downloadAllProfileBtn.disabled = false;
+                    
                     if(data.finished) {
-                        addLog(`Successfully downloaded: ${data.title}`, 'success');
+                        addLog(`Download complete!`, 'success');
                         elements.statusLabel.textContent = "✔️ DOWNLOAD DONE";
-                        elements.statusLabel.classList.add('success-pulse');
                         elements.downloadReady.classList.remove('hidden');
-                        setTimeout(() => elements.statusLabel.classList.remove('success-pulse'), 2000);
                     } else {
                         addLog(`Error: ${data.error}`, 'error');
                     }

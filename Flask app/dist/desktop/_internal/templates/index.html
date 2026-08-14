@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lastic Productions - Video Downloader</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>LASTIC PRODUCTIONS</h1>
+            <p>High-Speed Video & Audio Downloader</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- URL Input -->
+            <section class="input-section">
+                <div class="input-group">
+                    <input type="text" id="videoUrl" placeholder="Paste YouTube or Social link here..." autocomplete="off">
+                    <button id="analyzeBtn">ANALYZE</button>
+                </div>
+                <div id="errorMessage" class="error-text hidden"></div>
+            </section>
+
+            <!-- Preview Card (Hidden initially) -->
+            <section id="previewSection" class="preview-card hidden">
+                <div class="preview-flex">
+                    <img id="thumbnail" src="" alt="Thumbnail">
+                    <div class="video-info">
+                        <h3 id="videoTitle"></h3>
+                    </div>
+                </div>
+
+                <div class="settings">
+                    <div class="control-group">
+                        <label for="qualitySelect">Video Quality:</label>
+                        <select id="qualitySelect"></select>
+                    </div>
+
+                    <div id="audioSettings" class="control-group hidden">
+                        <label for="formatSelect">Format:</label>
+                        <select id="formatSelect">
+                            <option value="mp3">MP3</option>
+                            <option value="m4a">M4A</option>
+                            <option value="wav">WAV</option>
+                        </select>
+                        <label for="bitrateSelect" class="mt-2">Bitrate:</label>
+                        <select id="bitrateSelect">
+                            <option value="320">320kbps</option>
+                            <option value="256">256kbps</option>
+                            <option value="192">192kbps</option>
+                            <option value="128">128kbps</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="downloadBtn" class="primary-btn">DOWNLOAD VIDEO</button>
+                    <button id="quickMp3Btn" class="secondary-btn">QUICK MP3</button>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section id="progressSection" class="progress-container hidden">
+                <div class="status-header">
+                    <span id="statusLabel">READY</span>
+                    <span id="speedEta"></span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="progressBar" class="progress-bar-fill"></div>
+                </div>
+                <div id="downloadReady" class="hidden" style="margin-top: 20px; text-align: center;">
+                    <a href="/get_file" class="primary-btn" style="text-decoration: none; display: inline-block; width: 100%; border-radius: 12px; font-weight: 700;">💾 SAVE TO DEVICE</a>
+                </div>
+            </section>
+
+            <!-- Log Section -->
+            <section class="log-section">
+                <div class="log-header">
+                    <span>SYSTEM LOG</span>
+                    <button id="clearLog">CLEAR</button>
+                </div>
+                <div id="statusLog" class="log-content">
+                    <p class="log-entry">System ready...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const elements = {
+            videoUrl: document.getElementById('videoUrl'),
+            analyzeBtn: document.getElementById('analyzeBtn'),
+            previewSection: document.getElementById('previewSection'),
+            thumbnail: document.getElementById('thumbnail'),
+            videoTitle: document.getElementById('videoTitle'),
+            qualitySelect: document.getElementById('qualitySelect'),
+            audioSettings: document.getElementById('audioSettings'),
+            downloadBtn: document.getElementById('downloadBtn'),
+            quickMp3Btn: document.getElementById('quickMp3Btn'),
+            progressSection: document.getElementById('progressSection'),
+            statusLabel: document.getElementById('statusLabel'),
+            speedEta: document.getElementById('speedEta'),
+            progressBar: document.getElementById('progressBar'),
+            statusLog: document.getElementById('statusLog'),
+            clearLog: document.getElementById('clearLog'),
+            errorMessage: document.getElementById('errorMessage'),
+            downloadReady: document.getElementById('downloadReady')
+        };
+
+        function addLog(msg, type = 'info') {
+            const entry = document.createElement('p');
+            entry.className = `log-entry ${type}`;
+            const time = new Date().toLocaleTimeString([], { hour12: false });
+            entry.innerHTML = `<span class="log-time">[${time}]</span> ${msg}`;
+            elements.statusLog.appendChild(entry);
+            elements.statusLog.scrollTop = elements.statusLog.scrollHeight;
+        }
+
+        elements.analyzeBtn.onclick = async () => {
+            const url = elements.videoUrl.value.trim();
+            if(!url) return;
+
+            elements.analyzeBtn.disabled = true;
+            elements.analyzeBtn.textContent = '...';
+            elements.errorMessage.classList.add('hidden');
+            addLog(`Analyzing URL: ${url.substring(0, 30)}...`);
+
+            try {
+                const res = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({url})
+                });
+                const data = await res.json();
+                
+                if(data.error) throw new Error(data.error);
+
+                elements.thumbnail.src = data.thumbnail;
+                elements.videoTitle.textContent = data.title;
+                elements.qualitySelect.innerHTML = data.qualities.map(q => `<option value="${q}">${q}</option>`).join('');
+                elements.previewSection.classList.remove('hidden');
+                addLog(`Analyzed: ${data.title}`);
+            } catch (err) {
+                elements.errorMessage.textContent = err.message;
+                elements.errorMessage.classList.remove('hidden');
+                addLog(`Analysis failed: ${err.message}`, 'error');
+            } finally {
+                elements.analyzeBtn.disabled = false;
+                elements.analyzeBtn.textContent = 'ANALYZE';
+            }
+        };
+
+        elements.qualitySelect.onchange = () => {
+            if(elements.qualitySelect.value === 'Audio Only') {
+                elements.audioSettings.classList.remove('hidden');
+            } else {
+                elements.audioSettings.classList.add('hidden');
+            }
+        };
+
+        async function startDownload(config) {
+            elements.downloadBtn.disabled = true;
+            elements.quickMp3Btn.disabled = true;
+            elements.downloadReady.classList.add('hidden');
+            elements.progressSection.classList.remove('hidden');
+            addLog(`Initializing download: ${config.quality}...`);
+
+            try {
+                const res = await fetch('/download', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        url: elements.videoUrl.value.trim(),
+                        ...config
+                    })
+                });
+                pollStatus();
+            } catch (err) {
+                addLog(`Download failed: ${err.message}`, 'error');
+                elements.downloadBtn.disabled = false;
+                elements.quickMp3Btn.disabled = false;
+            }
+        }
+
+        elements.downloadBtn.onclick = () => {
+            startDownload({
+                quality: elements.qualitySelect.value,
+                audio_format: document.getElementById('formatSelect').value,
+                bitrate: document.getElementById('bitrateSelect').value
+            });
+        };
+
+        elements.quickMp3Btn.onclick = () => {
+            startDownload({
+                quality: 'Audio Only',
+                audio_format: 'mp3',
+                bitrate: '320'
+            });
+        };
+
+        let pollInterval;
+        function pollStatus() {
+            if(pollInterval) clearInterval(pollInterval);
+            pollInterval = setInterval(async () => {
+                const res = await fetch('/status');
+                const data = await res.json();
+
+                elements.statusLabel.textContent = data.status;
+                elements.progressBar.style.width = `${data.progress}%`;
+                elements.speedEta.textContent = `${data.speed} | ${data.eta}`;
+
+                if(data.finished || data.error) {
+                    clearInterval(pollInterval);
+                    elements.downloadBtn.disabled = false;
+                    elements.quickMp3Btn.disabled = false;
+                    if(data.finished) {
+                        addLog(`Successfully downloaded: ${data.title}`, 'success');
+                        elements.statusLabel.textContent = "✔️ DOWNLOAD DONE";
+                        elements.statusLabel.classList.add('success-pulse');
+                        elements.downloadReady.classList.remove('hidden');
+                        setTimeout(() => elements.statusLabel.classList.remove('success-pulse'), 2000);
+                    } else {
+                        addLog(`Error: ${data.error}`, 'error');
+                    }
+                }
+            }, 1000);
+        }
+
+        elements.clearLog.onclick = () => {
+            elements.statusLog.innerHTML = '';
+            addLog('Log cleared.');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+:root {
+    --bg-dark: #0a0a0a;
+    --card-bg: #181818;
+    --input-bg: #202020;
+    --accent-blue: #0070f3;
+    --accent-purple: #7928ca;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --success: #00ff00;
+    --error: #ff4d4d;
+    --radius: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 480px;
+}
+
+/* Header */
+.app-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.app-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+.app-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Input Section */
+.input-section {
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+input[type="text"] {
+    flex: 1;
+    background: var(--input-bg);
+    border: 1px solid #333;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 600;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#analyzeBtn {
+    background: var(--accent-blue);
+    color: white;
+    padding: 0 20px;
+}
+
+/* Preview Card */
+.preview-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    animation: slideUp 0.3s ease-out;
+}
+
+.preview-flex {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+#thumbnail {
+    width: 100px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.video-info h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.settings {
+    margin-bottom: 20px;
+}
+
+.control-group {
+    margin-bottom: 15px;
+}
+
+.control-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+
+select {
+    width: 100%;
+    background: var(--input-bg);
+    color: white;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.primary-btn {
+    background: var(--success);
+    color: black;
+    padding: 14px;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.secondary-btn {
+    background: var(--accent-purple);
+    color: white;
+    padding: 14px;
+    font-size: 1rem;
+}
+
+/* Progress */
+.progress-container {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.status-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+#speedEta {
+    color: var(--text-secondary);
+}
+
+.progress-bar-bg {
+    background: #333;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background: var(--accent-blue);
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease-out;
+}
+
+/* Log */
+.log-section {
+    background: #000;
+    border: 1px solid #222;
+    border-radius: var(--radius);
+    padding: 15px;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+#clearLog {
+    background: none;
+    color: #ff4d4d;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+}
+
+.log-content {
+    height: 120px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.75rem;
+}
+
+.log-entry { margin-bottom: 4px; }
+.log-time { color: #555; }
+.error { color: var(--error); }
+.success { color: var(--success); }
+
+/* Utilities */
+.hidden { display: none !important; }
+.mt-2 { margin-top: 10px; }
+.error-text { color: var(--error); font-size: 0.85rem; margin-top: 10px; }
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.success-pulse {
+    color: var(--success) !important;
+    font-weight: bold;
+    animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}

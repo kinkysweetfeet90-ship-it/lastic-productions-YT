@@ -1,0 +1,13 @@
+('C:\\Users\\Lasti\\AppData\\Roaming\\Python\\share\\angle\\bin',
+ None,
+ [],
+ 'DATA',
+ [('d3dcompiler_47.dll',
+   'C:\\Users\\Lasti\\AppData\\Roaming\\Python\\share\\angle\\bin\\d3dcompiler_47.dll',
+   'DATA'),
+  ('libEGL.dll',
+   'C:\\Users\\Lasti\\AppData\\Roaming\\Python\\share\\angle\\bin\\libEGL.dll',
+   'DATA'),
+  ('libGLESv2.dll',
+   'C:\\Users\\Lasti\\AppData\\Roaming\\Python\\share\\angle\\bin\\libGLESv2.dll',
+   'DATA')])

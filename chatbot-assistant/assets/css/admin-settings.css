@@ -1,0 +1,27 @@
+.cba-model-selector-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#cba-chat-container * {
+    transition: all 0.2s;
+}
+
+.cba-typing {
+    font-style: italic;
+    opacity: 0.7;
+}
+
+#cba-chat-toggle .cba-icon-chat {
+    font-size: 24px;
+}
+
+#cba-model-spinner {
+    float: none;
+    margin: 0;
+}
+
+.is-active {
+    visibility: visible !important;
+}

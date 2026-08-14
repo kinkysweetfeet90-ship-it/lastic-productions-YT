@@ -6,3 +6,5 @@ __pycache__/
 *.webm
 *.mkv
 *.log
+.venv/
+test_zip/
