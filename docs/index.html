@@ -16,66 +16,66 @@
             --accent-primary: #38bdf8;
             --accent-secondary: #818cf8;
             --gradient-main: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-            --danger: #ef4444;
             --success: #10b981;
+            --danger: #ef4444;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-display: 'Orbitron', monospace;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-body); color: var(--text-primary); font-family: var(--font-sans); }
+        body { background-color: var(--bg-body); color: var(--text-primary); font-family: var(--font-sans); height: 100vh; overflow: hidden; }
         .matrix-rain { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 0.15; pointer-events: none; }
         header { position: fixed; top: 0; left: 0; width: 100%; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(9, 9, 11, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); }
-        .logo { display: flex; align-items: center; gap: 12px; font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; }
-        .logo-icon { width: 32px; height: 32px; background: var(--gradient-main); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .logo { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+        .logo-icon { width: 32px; height: 32px; background: var(--gradient-main); border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(56,189,248,0.4); }
         .logo-text { background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .header-links { display: flex; gap: 24px; }
         .header-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: color 0.2s; }
         .header-links a:hover { color: var(--accent-primary); }
-        .hero { position: relative; min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; padding: 0 32px 80px; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.08), transparent 20%), radial-gradient(circle at 80% 80%, rgba(129, 70, 255, 0.06), transparent 25%); z-index: 1; }
-        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 800px; margin: 0 auto; }
-        .hero-content h1 { font-family: 'Orbitron', sans-serif; font-size: 2.8rem; font-weight: 700; margin-bottom: 24px; line-height: 1.1; }
+        .hero { position: relative; min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; padding: 80px 32px 0; z-index: 1; }
+        .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(56, 189, 248, 0.1), transparent 50%); z-index: 0; }
+        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 720px; margin: 0 auto; }
+        .hero-content h1 { font-family: var(--font-display); font-size: 3rem; font-weight: 700; margin-bottom: 24px; line-height: 1.1; }
         .hero-content .gradient-text { background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-content p { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 32px; max-width: 580px; margin-left: auto; margin-right: auto; }
-        .launch-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; border: none; padding: 16px 48px; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; background: var(--gradient-main); color: #000; box-shadow: 0 0 30px rgba(56, 189, 248, 0.4); }
-        .launch-btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(56, 189, 248, 0.6); }
-        .launch-btn:active { transform: scale(0.98); }
-        .download-form { margin: 32px auto 0; max-width: 600px; }
-        .download-form .url-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: var(--text-primary); font-size: 15px; outline: none; transition: border-color 0.2s; }
-        .download-form .url-input:focus { border-color: var(--accent-primary); }
-        .download-form .fetch-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--gradient-main); color: #000; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; margin-top: 12px; transition: all 0.2s; }
-        .download-form .fetch-btn:hover { opacity: 0.9; }
-        .features { position: relative; z-index: 2; max-width: 1100px; margin: 60px auto 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; padding: 0 20px; }
-        .feature-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; text-align: center; transition: all 0.3s ease; }
-        .feature-card:hover { transform: translateY(-4px); border-color: rgba(56, 189, 248, 0.4); }
+        .hero-content p { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 32px; }
+        .launch-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; border: none; padding: 16px 48px; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; font-family: var(--font-display); background: var(--gradient-main); color: #000; box-shadow: 0 0 30px rgba(56,189,248,0.4); animation: pulse 2s infinite; }
+        .launch-btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(56,189,248,0.6); animation: none; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 60px; padding: 0 20px; }
+        .feature-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; text-align: center; transition: all 0.3s ease; cursor: pointer; }
+        .feature-card:hover { transform: translateY(-4px); border-color: rgba(56,189,248,0.4); }
         .feature-card i { font-size: 28px; color: var(--accent-primary); margin-bottom: 12px; }
         .feature-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
         .feature-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
-        .result-section { margin-top: 24px; padding: 20px; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color); text-align: left; }
-        .result-section h3 { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
-        .video-preview { display: flex; gap: 12px; align-items: flex-start; }
-        .video-preview img { width: 120px; height: 90px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
-        .video-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-        .video-info .meta { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
-        .format-select { width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 13px; margin-top: 12px; }
-        .download-btn { width: 100%; padding: 12px; border: none; border-radius: 12px; background: var(--gradient-main); color: #000; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; margin-top: 12px; }
-        .download-btn:hover { opacity: 0.9; }
+        .feature-card .hint { margin-top: 12px; font-size: 12px; color: var(--accent-primary); }
+        .status-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; background: rgba(255,255,255,0.1); font-size: 12px; font-weight: 600; color: var(--success); margin-bottom: 20px; }
+        .status-badge.building { color: var(--danger); }
+        .status-badge.building::before { content: ""; display: inline-block; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; margin-right: 6px; animation: pulse 1.5s infinite; }
+        .status-badge.ready::before { content: ""; display: inline-block; width: 8px; height: 8px; background: var(--success); border-radius: 50%; margin-right: 6px; }
         footer { position: relative; z-index: 2; text-align: center; padding: 40px 20px; color: var(--text-secondary); font-size: 13px; }
-        .footer-links { display: flex; justify-content: center; gap: 16px; margin-bottom: 12px; }
-        .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 12px; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; }
+        .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 13px; }
         .footer-links a:hover { color: var(--accent-primary); }
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 2rem; }
-            .hero-content p { font-size: 1rem; }
             .launch-btn { padding: 14px 36px; font-size: 0.95rem; }
             header { padding: 12px 20px; }
+            .hero { padding: 60px 12px 0; }
         }
+        .dots-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
+
+    <!-- Matrix rain canvas -->
     <canvas class="matrix-rain" id="matrixCanvas"></canvas>
+    <div class="dots-container" id="dotsContainer"></div>
+
+    <!-- Header -->
     <header>
         <div class="logo">
-            <div class="logo-icon"><i class="fas fa-bolt"></i></div>
+            <div class="logo-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
             <span class="logo-text">STUDIO CYBER</span>
         </div>
         <nav class="header-links">
@@ -85,39 +85,58 @@
         </nav>
     </header>
 
-    <section class="hero">
+    <!-- Hero Section -->
+    <section class="hero" id="home">
         <div class="hero-content">
-            <h1><span class="gradient-text">LASTIC PRODUCTIONS</span><br>Premium Media Toolset</h1>
-            <p>Download videos from YouTube, Twitter/X, Instagram, TikTok, Facebook, and more. Support for multiple quality formats, audio extraction (MP3/M4A/WAV), subtitles, and bulk profile scraping.</p>
-            <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/releases/latest" class="launch-btn">
-                <i class="fas fa-rocket"></i> LAUNCH APP
+            <span class="status-badge building" id="buildStatus">APK BUILD IN PROGRESS</span>
+            <h1>
+                <span class="gradient-text">LASTIC PRODUCTIONS</span><br>
+                Premium Media Toolset
+            </h1>
+            <p>
+                Download videos from YouTube, Twitter/X, Instagram, TikTok, Facebook, and more.
+                Support for multiple quality formats, audio extraction (MP3/M4A/WAV), subtitles,
+                and bulk profile scraping.
+            </p>
+            <a href="javascript:void(0)" class="launch-btn" onclick="openDownloadModal()">
+                <i class="fas fa-rocket"></i>
+                LAUNCH APP
             </a>
 
-            <div class="download-form" id="download">
-                <input type="url" id="videoUrl" class="url-input" placeholder="Paste YouTube/TikTok/Instagram URL here..." />
-                <button class="fetch-btn" id="fetchBtn">FETCH DETAILS</button>
-                <div id="resultSection" style="display: none;" class="result-section"></div>
-            </div>
-
-            <div class="features" id="features">
-                <div class="feature-card"><i class="fab fa-youtube"></i><h3>YouTube Downloader</h3><p>Download videos in MP4 up to 4K quality.</p></div>
-                <div class="feature-card"><i class="fab fa-twitter"></i><h3>Twitter/X</h3><p>Capture tweets, videos, and images.</p></div>
-                <div class="feature-card"><i class="fab fa-instagram"></i><h3>Instagram</h3><p>Photos, Reels, Stories & IGTV.</p></div>
-                <div class="feature-card"><i class="fab fa-tiktok"></i><h3>TikTok</h3><p>MP4 downloads with original sound.</p></div>
-                <div class="feature-card"><i class="fas fa-music"></i><h3>Audio Extraction</h3><p>Convert to MP3/M4A/WAV.</p></div>
-                <div class="feature-card"><i class="fas fa-file-export"></i><h3>Subtitles</h3><p>Extract SRT/WebVTT captions.</p></div>
+            <div class="feature-grid" id="features">
+                <div class="feature-card" onclick="openDownloadModal()">
+                    <i>🎥</i>
+                    <h3>YouTube & Social</h3>
+                    <p>Download from all major platforms</p>
+                    <div class="hint">Click to download →</div>
+                </div>
+                <div class="feature-card">
+                    <i>🎵</i>
+                    <h3>Audio Extraction</h3>
+                    <p>Convert to MP3/M4A/WAV</p>
+                </div>
+                <div class="feature-card">
+                    <i>📦</i>
+                    <h3>Bulk Scraping</h3>
+                    <p>Profile archive downloads</p>
+                </div>
+                <div class="feature-card">
+                    <i>📱</i>
+                    <h3>APK App</h3>
+                    <p>Android build in progress</p>
+                </div>
             </div>
         </div>
+
+        <footer id="support">
+            <div class="footer-links">
+                <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT">GitHub</a>
+                <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/releases">Releases</a>
+                <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/actions">Build Status</a>
+            </div>
+            <p>STUDIO CYBER · LASTIC PRODUCTIONS · 2026</p>
+        </footer>
     </section>
-
-    <footer id="support">
-        <div class="footer-links">
-            <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT">GitHub</a>
-            <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/releases">Releases</a>
-            <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/wiki">Wiki</a>
-        </div>
-        <p>STUDIO CYBER · LASTIC PRODUCTIONS · 2026</p>
-    </footer>
 
     <script>
         // Matrix rain animation
@@ -126,12 +145,14 @@
         let columns = [];
         const fontSize = 14;
         let cols;
+
         function initCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             cols = Math.floor(canvas.width / fontSize);
             columns = Array(cols).fill(0);
         }
+
         function drawMatrix() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -149,19 +170,122 @@
             }
             requestAnimationFrame(drawMatrix);
         }
+
         window.addEventListener('resize', initCanvas);
         initCanvas();
         drawMatrix();
 
+        // Matrix dots background
+        const dotsContainer = document.getElementById('dotsContainer');
+        const dotCount = 50;
+        for (let i = 0; i < dotCount; i++) {
+            const dot = document.createElement('div');
+            dot.style.position = 'absolute';
+            dot.style.width = '2px';
+            dot.style.height = '2px';
+            dot.style.background = '#38bdf8';
+            dot.style.borderRadius = '50%';
+            dot.style.opacity = '0.3';
+            dot.style.left = Math.random() * 100 + 'vw';
+            dot.style.top = Math.random() * 100 + 'vh';
+            dotsContainer.appendChild(dot);
+        }
+
+        // Check build status
+        async function checkBuildStatus() {
+            try {
+                const res = await fetch('https://api.github.com/repos/kinkysweetfeet90-ship-it/lastic-productions-YT/actions/runs?per_page=3');
+                const data = await res.json();
+                const latest = data.workflow_runs?.[0];
+                if (latest) {
+                    const statusEl = document.getElementById('buildStatus');
+                    if (latest.status === 'in_progress' || latest.status === 'queued') {
+                        statusEl.textContent = 'APK BUILD IN PROGRESS';
+                        statusEl.className = 'status-badge building';
+                    } else if (latest.conclusion === 'success') {
+                        statusEl.textContent = 'APK READY FOR DOWNLOAD';
+                        statusEl.className = 'status-badge ready';
+                    }
+                }
+            } catch(e) {
+                console.log('Status check failed');
+            }
+        }
+
+        checkBuildStatus();
+        setInterval(checkBuildStatus, 60000); // Check every minute
+
         // Smart download logic
         const API_URL = "https://lastic-productions.onrender.com";
 
-        document.getElementById('fetchBtn').addEventListener('click', async function() {
-            const url = document.getElementById('videoUrl').value.trim();
-            if (!url) return alert('Please paste a URL first.');
+        async function openDownloadModal() {
+            const platforms = [
+                { name: "YouTube", icon: "youtube", color: "#FF0000" },
+                { name: "Twitter/X", icon: "twitter", color: "#1DA1F2" },
+                { name: "Instagram", icon: "instagram", color: "#E4405F" },
+                { name: "TikTok", icon: "tiktok", color: "#FEAF1A" },
+                { name: "Facebook", icon: "facebook", color: "#1877F2" },
+                { name: "Reddit", icon: "reddit", color: "#FF4500" },
+                { name: "Twitch", icon: "twitch", color: "#9146FF" },
+                { name: "SoundCloud", icon: "soundcloud", color: "#FF5500" }
+            ];
 
-            const btn = this;
-            btn.innerHTML = '<i class="fas fa-spinner"></i> FETCHING...';
+            let cards = '';
+            platforms.forEach(p => {
+                cards += `<div class="platform-card" style="border: 1px solid ${p.color}40; padding: 16px; border-radius: 12px; text-align: center; margin-bottom: 12px;">
+                    <div class="platform-icon" style="color: ${p.color}; font-size: 28px; margin-bottom: 8px;">
+                        <i class="fab fa-${p.icon}"></i>
+                    </div>
+                    <h3 style="font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text-primary);">${p.name}</h3>
+                    <p style="font-size: 11px; color: var(--text-secondary);">Video + Audio + Subs</p>
+                </div>`;
+            });
+
+            const modal = document.createElement('div');
+            modal.className = 'download-modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 style="font-family: var(--font-display); font-size: 1.8rem;">Download From</h2>
+                        <span class="close-modal" onclick="closeDownloadModal()" style="cursor: pointer; font-size: 28px; color: var(--text-secondary);">&times;</span>
+                    </div>
+                    <div class="platform-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px;">
+                        ${cards}
+                    </div>
+                    <div class="download-form-section">
+                        <input type="url" id="videoUrl" class="download-input" placeholder="Paste video/podcast URL here..." style="width: 100%; padding: 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-primary); font-size: 15px; outline: none;" />
+                        <button id="fetchBtn" class="download-submit" style="width: 100%; padding: 14px; background: var(--gradient-main); border: none; border-radius: 12px; color: #000; font-weight: 700; cursor: pointer; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 12px;" onclick="fetchVideoDetails()">
+                            <i class="fas fa-download"></i> FETCH DETAILS
+                        </button>
+                        <div id="resultSection" style="display: none; margin-top: 16px; padding: 16px; background: rgba(0,0,0,0.2); border-radius: 12px;"></div>
+                    </div>
+                    <div class="app-downloads" style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">Or get the full desktop app:</p>
+                        <div class="app-downloads-grid" style="display: flex; gap: 12px;">
+                            <a href="https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/releases/latest" class="app-download-btn" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-primary); padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 13px;">
+                                <i class="fab fa-github"></i> GitHub Releases
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function closeDownloadModal() {
+            const modal = document.querySelector('.download-modal');
+            if (modal) modal.remove();
+        }
+
+        async function fetchVideoDetails() {
+            const url = document.getElementById('videoUrl').value.trim();
+            if (!url) {
+                alert('Please paste a URL first.');
+                return;
+            }
+
+            const btn = document.getElementById('fetchBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> FETCHING...';
             btn.disabled = true;
 
             try {
@@ -172,7 +296,6 @@
                 });
 
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
                 const data = await res.json();
                 showVideoDetails(data, url);
             } catch(e) {
@@ -181,17 +304,17 @@
                 btn.innerHTML = '<i class="fas fa-download"></i> FETCH DETAILS';
                 btn.disabled = false;
             }
-        });
+        }
 
         function showVideoDetails(data, url) {
             const section = document.getElementById('resultSection');
             section.style.display = 'block';
 
-            let html = `<div class="video-preview">
-                <img src="${data.thumbnail || 'https://via.placeholder.com/120x90?text=No+Thumbnail'}" alt="Thumbnail" />
-                <div class="video-info">
-                    <h4>${data.title || 'Unknown Title'}</h4>
-                    <div class="meta">
+            let html = `<div class="video-preview" style="display: flex; gap: 12px; align-items: flex-start;">
+                <img src="${data.thumbnail || 'https://via.placeholder.com/120x90?text=No+Thumbnail'}" alt="Thumbnail" style="width: 120px; height: 90px; object-fit: cover; border-radius: 8px; flex-shrink: 0;" />
+                <div class="video-info" style="flex: 1; min-width: 0;">
+                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">${data.title || 'Unknown Title'}</h4>
+                    <div class="meta" style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">
                         <div>• Duration: ${data.duration || 'N/A'}</div>
                         <div>• Platform: ${data.platform || 'Detected'}</div>
                         ${data.uploader ? `<div>• Uploader: ${data.uploader}</div>` : ''}
@@ -200,7 +323,7 @@
             </div>`;
 
             if (data.formats && data.formats.length > 0) {
-                html += '<select id="formatSelect" class="format-select">';
+                html += '<select id="formatSelect" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 13px; margin-top: 12px;">';
                 data.formats.forEach(fmt => {
                     const label = `${fmt.quality || fmt.ext} • ${fmt.ext} • ${fmt.type || 'video'}`;
                     html += `<option value="${fmt.url || fmt.quality}">${label}</option>`;
@@ -208,12 +331,11 @@
                 html += '</select>';
             }
 
-            html += `<button class="download-btn" onclick="downloadFile('${encodeURIComponent(url)}')">
+            html += `<button class="download-btn" style="width: 100%; padding: 12px; border: none; border-radius: 12px; background: var(--gradient-main); color: #000; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; margin-top: 12px;" onclick="downloadFile('${encodeURIComponent(url)}')">
                 <i class="fas fa-download"></i> DOWNLOAD NOW
             </button>`;
 
-            // Update section heading
-            section.innerHTML = '<h3>Video Details</h3>' + html;
+            section.innerHTML = html;
         }
 
         function downloadFile(encodedUrl) {
@@ -222,6 +344,8 @@
             const downloadUrl = `${API_URL}/download?url=${encodedUrl}${fmt ? '&format=' + encodeURIComponent(selected) : ''}`;
             window.open(downloadUrl, '_blank');
         }
+
+        console.log("%cSTUDIO CYBER · LASTIC PRODUCTIONS", "color:#38bdf8; font-family:monospace");
     </script>
 </body>
 </html>
