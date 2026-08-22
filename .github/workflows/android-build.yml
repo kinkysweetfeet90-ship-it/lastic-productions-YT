@@ -21,61 +21,58 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install system dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y build-essential git python3-pip python3-setuptools python3-wheel
-        sudo apt install -y libssl-dev libffi-dev
-        sudo apt install -y autoconf libtool pkg-config
-        sudo apt install -y zlib1g-dev
-        sudo apt install -y libncurses-dev libncursesw5-dev libtinfo6
-        sudo apt install -y libffi-dev libssl-dev
-        sudo apt install -y openjdk-17-jdk
-        sudo apt install -y ffmpeg
-        pip3 install --upgrade pip
-        pip3 install buildozer cython
-
     - name: Set up Java
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Cache Buildozer
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential git zip unzip autoconf automake libtool \
+          pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev \
+          libssl-dev ffmpeg ccache
+
+    - name: Install Buildozer
+      run: |
+        pip3 install --upgrade pip wheel setuptools
+        pip3 install buildozer cython
+
+    - name: Cache Buildozer global dir
       uses: actions/cache@v4
       with:
-        path: .buildozer
-        key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
+        path: |
+          ~/.buildozer
+          ~/.cache/pip
+        key: buildozer-${{ runner.os }}-v2-${{ hashFiles('buildozer.spec') }}
+        restore-keys: buildozer-${{ runner.os }}-v2-
 
-    - name: Set up Android environment
+    - name: Pre-install Android SDK into Buildozer's path
       run: |
-        mkdir -p $HOME/android-sdk
-        cd $HOME
-        wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-        unzip -q commandlinetools-linux-9477386_latest.zip -d android-sdk/cmdline-tools
-        mv android-sdk/cmdline-tools/cmdline-tools android-sdk/cmdline-tools/latest
-        export ANDROID_SDK_ROOT=$HOME/android-sdk
-        export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
-        yes | sdkmanager --licenses --sdk_root=$ANDROID_SDK_ROOT 2>&1 || true
-        yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platforms;android-33" "build-tools;33.0.0" 2>&1 || true
-        wget -q https://dl.google.com/android/repository/android-ndk-r25c-linux.zip
-        unzip -q android-ndk-r25c-linux.zip
-        export ANDROID_NDK_HOME=$HOME/android-ndk-r25c
+        export ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk
+        mkdir -p $ANDROID_HOME/cmdline-tools
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/clt.zip
+        unzip -q /tmp/clt.zip -d /tmp/clt
+        rm -rf $ANDROID_HOME/cmdline-tools/latest
+        mv /tmp/clt/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses > /dev/null || true
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME \
+          "platform-tools" "platforms;android-33" "build-tools;33.0.0"
 
     - name: Build APK
       run: |
-        export ANDROID_SDK_ROOT=$HOME/android-sdk
-        export ANDROID_NDK_HOME=$HOME/android-ndk-r25c
-        export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
-        buildozer android debug -v
+        export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
+        export ANDROIDSDK=$ANDROID_SDK_ROOT
+        buildozer -v android debug
 
-    - name: Upload APK
+    - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
-        name: android-apk
+        name: lasticproductions-debug-apk
         path: bin/*.apk
         retention-days: 30
-      continue-on-error: true
+        if-no-files-found: error
 
     - name: Create Release
       if: startsWith(github.ref, 'refs/tags/')
