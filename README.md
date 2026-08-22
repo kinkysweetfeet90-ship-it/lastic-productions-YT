@@ -34,6 +34,19 @@
 
 ## 📥 Get the App
 
+### 🖥️ Web Downloader for Windows (Easiest)
+
+**No install wizard, no cloud — runs 100% on YOUR pc:**
+
+1. **[⬇️ Download ZIP](https://github.com/kinkysweetfeet90-ship-it/lastic-productions-YT/archive/refs/heads/main.zip)** *(or green `< > Code` button → Download ZIP)*
+2. Extract it anywhere
+3. Double-click **`START_WEB_APP.bat`**
+4. Your browser opens the full downloader at `http://127.0.0.1:5001` 🎉
+
+> **Requirements:** [Python](https://www.python.org/downloads/) (tick *"Add to PATH"* during install). Optional: [FFmpeg](https://www.gyan.dev/ffmpeg/builds/) for MP3 conversion.
+>
+> **📱 Bonus:** your phone can use it too — connect to the same Wi-Fi and open `http://<your-pc-ip>:5001` (shown in the launcher window).
+
 ### 🤖 Android (APK)
 > Every push to `main` automatically builds a fresh APK via GitHub Actions.
 
